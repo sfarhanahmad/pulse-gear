@@ -12,7 +12,7 @@ const products: Array<Product> = [
   {
     id: 1,
     name: 'M04 TWS Wireless Earbuds',
-    image: 'https://priceoye.pk/wireless-earbuds/assorted/m04-tws-wireless-bluetooth-earbuds',
+    image: '/m04.jpg',
     category: 'earbuds',
     shortDescription: 'Crystal-clear sound with deep bass and 24-hour battery life.',
     description:

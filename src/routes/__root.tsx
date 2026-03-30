@@ -1,5 +1,17 @@
 import { HeadContent, Scripts, createRootRoute, Link } from '@tanstack/react-router'
+import { useState, useEffect } from 'react'
 import '../styles.css'
+
+const LOGO_KEY = 'pg_logo_image'
+
+export function getLogoImage(): string {
+  try { return localStorage.getItem(LOGO_KEY) || '' } catch { return '' }
+}
+
+export function saveLogoImage(base64: string): void {
+  localStorage.setItem(LOGO_KEY, base64)
+  window.dispatchEvent(new CustomEvent('pg_logo_updated'))
+}
 
 export const Route = createRootRoute({
   head: () => ({
@@ -16,9 +28,7 @@ export const Route = createRootRoute({
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="bg-black text-white">
-      <head>
-        <HeadContent />
-      </head>
+      <head><HeadContent /></head>
       <body className="bg-black text-white min-h-screen">
         <Header />
         {children}
@@ -29,12 +39,33 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   )
 }
 
+export function Logo({ className = '' }: { className?: string }) {
+  const [logoImage, setLogoImage] = useState('')
+
+  useEffect(() => {
+    setLogoImage(getLogoImage())
+    function onUpdate() { setLogoImage(getLogoImage()) }
+    window.addEventListener('pg_logo_updated', onUpdate)
+    return () => window.removeEventListener('pg_logo_updated', onUpdate)
+  }, [])
+
+  if (logoImage) {
+    return <img src={logoImage} alt="PulseGear" className={`h-10 w-auto object-contain ${className}`} />
+  }
+
+  return (
+    <span className="text-yellow-400 font-black text-2xl tracking-tight">
+      Pulse<span className="text-white">Gear</span>
+    </span>
+  )
+}
+
 function Header() {
   return (
     <header className="sticky top-0 z-50 bg-black/90 backdrop-blur border-b border-white/10">
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 no-underline">
-          <span className="text-yellow-400 font-black text-2xl tracking-tight">Pulse<span className="text-white">Gear</span></span>
+          <Logo />
         </Link>
         <nav className="flex items-center gap-6">
           <Link to="/" className="text-white/70 hover:text-white transition-colors text-sm font-medium no-underline">Shop</Link>
@@ -58,7 +89,7 @@ function Footer() {
   return (
     <footer className="border-t border-white/10 mt-24 py-12">
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-        <span className="text-yellow-400 font-black text-xl">Pulse<span className="text-white">Gear</span></span>
+        <Logo />
         <p className="text-white/40 text-sm">© {new Date().getFullYear()} PulseGear. All rights reserved.</p>
         <div className="flex gap-4 text-sm">
           <Link to="/about" className="text-white/40 hover:text-white transition-colors no-underline">About</Link>

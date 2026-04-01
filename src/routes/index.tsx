@@ -74,7 +74,6 @@ function HomePage() {
       <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Loading PulseGear...</p>
     </div>
   )
-
   const waLink = `https://wa.me/${content.whatsappNumber}`
   const usedCategories = categories.filter(c => products.some(p => p.category === c.id))
   const filtered = activeCategory === 'all' ? products : products.filter(p => p.category === activeCategory)
@@ -120,7 +119,6 @@ function HomePage() {
           ))}
         </div>
       </section>
-
       {/* Categories */}
       <section style={{ maxWidth: 1152, margin: '0 auto', padding: '4rem 1rem 2rem' }}>
         <h2 className="reveal" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '2rem', marginBottom: 24, color: 'var(--text)' }}>
@@ -137,18 +135,13 @@ function HomePage() {
               onClick={() => { setActiveCategory(cat.id); document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' }) }}>
               <img src={CATEGORY_IMAGES[cat.id] || 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80'} alt={cat.label}
                 onError={e => { (e.target as HTMLImageElement).src = '/placeholder.png' }} />
-              <div className="cat-card-overlay">
-                <div>
-                  <div style={{ fontSize: '1.3rem', marginBottom: 4 }}>{cat.icon}</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: '#fff' }}>{cat.label}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: 2 }}>{products.filter(p => p.category === cat.id).length} items</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+<div className="cat-card-overlay">
+  <div>
+    <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', color: '#fff' }}>{cat.label}</div>
+    <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginTop: 4 }}>{products.filter(p => p.category === cat.id).length} items</div>
+  </div>
+</div>
       </section>
-
       {/* Products */}
       <section id="products" style={{ maxWidth: 1152, margin: '0 auto', padding: '2rem 1rem' }}>
         <div className="reveal" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginBottom: 40, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: '14px 18px' }}>

@@ -123,9 +123,14 @@ function HomePage() {
 
       {/* Categories */}
       <section style={{ maxWidth: 1152, margin: '0 auto', padding: '4rem 1rem 2rem' }}>
-        <h2 className="reveal" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '2rem', marginBottom: 24 }}>
-          Shop by <span className="gradient-text">Category</span>
-        </h2>
+        <h2 className="reveal" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '2rem', marginBottom: 24, color: 'var(--text)' }}>
+  Shop by <span style={{
+    background: 'linear-gradient(135deg, #a78bfa, #c4b5fd)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+  }}>Category</span>
+</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16 }}>
           {usedCategories.map((cat, i) => (
             <div key={cat.id} className={`cat-card reveal reveal-delay-${(i % 4) + 1}`} style={{ height: 200 }}

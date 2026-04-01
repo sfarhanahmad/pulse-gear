@@ -171,19 +171,34 @@ function CategoriesTab({ categories, onRefresh }: { categories: Category[]; onRe
     </div>
   )
 }
-
 function CategoryModal({ category, onClose, onSave }: { category: Category | null; onClose: () => void; onSave: () => void }) {
   const isEdit = !!category
   const [label, setLabel] = useState(category?.label ?? '')
   const [icon, setIcon] = useState(category?.icon ?? '📦')
+  const [image, setImage] = useState((category as any)?.image ?? '')
   const [saving, setSaving] = useState(false)
+  const fileRef = useRef<HTMLInputElement>(null)
+  const [uploading, setUploading] = useState(false)
   const EMOJIS = ['🎧','🎵','⌚','👛','🔋','📱','💻','🖥️','⌨️','🖱️','📷','🎮','🔌','🔦','🎒','👓','💡','🔧','📡','🎁']
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]; if (!file) return
+    setUploading(true)
+    try {
+      const url = await uploadImage(file, `categories/${Date.now()}_${file.name}`)
+      setImage(url)
+    } catch {
+      const b64 = await fileToBase64(file)
+      setImage(b64)
+    }
+    setUploading(false)
+  }
 
   async function handleSave() {
     if (!label.trim()) return
     setSaving(true)
-    if (isEdit && category) { await updateCategory(category.id, { label, icon }) }
-    else { await addCategory({ label, icon }) }
+    if (isEdit && category) { await updateCategory(category.id, { label, icon, image } as any) }
+    else { await addCategory({ label, icon, image } as any) }
     setSaving(false)
     onSave()
   }
@@ -194,6 +209,21 @@ function CategoryModal({ category, onClose, onSave }: { category: Category | nul
       <div style={{ marginBottom: 20 }}>
         <label style={S.label}>Category Name *</label>
         <input value={label} onChange={e => setLabel(e.target.value)} placeholder="e.g. Smart Speakers" style={S.input} autoFocus />
+      </div>
+      <div style={{ marginBottom: 20 }}>
+        <label style={S.label}>Category Image</label>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 10 }}>
+          <div style={{ width: 80, height: 80, borderRadius: 12, background: 'var(--bg-subtle)', border: '1px solid var(--border)', overflow: 'hidden', flexShrink: 0 }}>
+            {image ? <img src={image} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).src = '/placeholder.png' }} /> : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-faint)', fontSize: '0.65rem', textAlign: 'center', padding: 4 }}>No image</div>}
+          </div>
+          <div style={{ flex: 1 }}>
+            <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
+            <button onClick={() => fileRef.current?.click()} disabled={uploading} style={{ ...S.btn(), width: '100%', justifyContent: 'center', marginBottom: 8 }}>
+              {uploading ? 'Uploading...' : '📁 Upload Image'}
+            </button>
+            <input type="text" value={image.startsWith('data:') ? '' : image} onChange={e => setImage(e.target.value)} placeholder="Or paste image URL..." style={S.input} />
+          </div>
+        </div>
       </div>
       <div style={{ marginBottom: 20 }}>
         <label style={S.label}>Icon (emoji)</label>
@@ -209,6 +239,7 @@ function CategoryModal({ category, onClose, onSave }: { category: Category | nul
       </div>
       {label && (
         <div style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 16px', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
+          {image && <img src={image} alt="preview" style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).src = '/placeholder.png' }} />}
           <span style={{ fontSize: '1.4rem' }}>{icon}</span>
           <div>
             <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)' }}>Preview</p>

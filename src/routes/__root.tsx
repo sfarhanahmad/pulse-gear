@@ -312,3 +312,20 @@ function Footer() {
     </footer>
   )
 }
+function CartBadge() {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    function update() {
+      try { const cart = JSON.parse(localStorage.getItem('pg_cart') || '[]'); setCount(cart.reduce((s: number, i: any) => s + i.quantity, 0)) } catch {}
+    }
+    update()
+    window.addEventListener('pg_cart_updated', update)
+    return () => window.removeEventListener('pg_cart_updated', update)
+  }, [])
+  if (count === 0) return null
+  return (
+    <span style={{ position: 'absolute', top: -6, right: -6, background: 'linear-gradient(135deg, var(--accent), var(--accent2))', color: '#fff', borderRadius: '50%', width: 18, height: 18, fontSize: '0.65rem', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 8px var(--accent-glow)' }}>
+      {count}
+    </span>
+  )
+}

@@ -241,4 +241,73 @@ function Header() {
             </a>
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Hi, {use
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'User'}</span>
+                <button onClick={logout} style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-muted)', borderRadius: 8, padding: '6px 12px', fontSize: '0.8rem', cursor: 'pointer', fontFamily: 'var(--font-body)' }}>Logout</button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', gap: 8, marginLeft: 4 }}>
+                <button onClick={() => setAuthModal('login')} style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 10, padding: '7px 16px', fontSize: '0.875rem', cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: 600, transition: 'all 0.2s' }}
+                  onMouseEnter={e => { (e.currentTarget).style.borderColor = 'var(--accent)'; (e.currentTarget).style.color = 'var(--accent)' }}
+                  onMouseLeave={e => { (e.currentTarget).style.borderColor = 'var(--border)'; (e.currentTarget).style.color = 'var(--text)' }}>
+                  Login
+                </button>
+                <button onClick={() => setAuthModal('register')} className="pg-btn-glow" style={{ padding: '7px 16px', fontSize: '0.875rem' }}>
+                  Register
+                </button>
+              </div>
+            )}
+            <ThemeToggle />
+          </nav>
+
+          {/* Mobile */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }} className="flex md:hidden">
+            <ThemeToggle />
+            <button onClick={() => setMenuOpen(o => !o)} style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', borderRadius: 8, padding: '6px 10px', cursor: 'pointer', color: 'var(--text)' }}>
+              {menuOpen ? '✕' : '☰'}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div style={{ borderTop: '1px solid var(--border)', background: 'var(--nav-bg)', padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {[['/', 'Shop'], ['/about', 'About'], ['/contact', 'Contact']].map(([to, label]) => (
+              <Link key={to} to={to} onClick={() => setMenuOpen(false)}
+                style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 500, padding: '10px 12px', borderRadius: 8 }}>
+                {label}
+              </Link>
+            ))}
+            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+              <button onClick={() => { setAuthModal('login'); setMenuOpen(false) }} style={{ flex: 1, background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 10, padding: '10px', fontSize: '0.875rem', cursor: 'pointer', fontFamily: 'var(--font-body)' }}>Login</button>
+              <button onClick={() => { setAuthModal('register'); setMenuOpen(false) }} className="pg-btn-glow" style={{ flex: 1, padding: '10px', fontSize: '0.875rem' }}>Register</button>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {authModal && <AuthModal mode={authModal} onClose={() => setAuthModal(null)} />}
+    </>
+  )
+}
+
+function Footer() {
+  return (
+    <footer style={{ borderTop: '1px solid var(--border)', marginTop: '5rem', padding: '3rem 0' }}>
+      <div style={{ maxWidth: 1152, margin: '0 auto', padding: '0 1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24 }}>
+        <Logo />
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', justifyContent: 'center' }}>
+          {[['/', 'Shop'], ['/about', 'About'], ['/contact', 'Contact']].map(([to, label]) => (
+            <Link key={to} to={to} style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s' }}
+              onMouseEnter={e => { (e.target as HTMLElement).style.color = 'var(--text)' }}
+              onMouseLeave={e => { (e.target as HTMLElement).style.color = 'var(--text-muted)' }}>
+              {label}
+            </Link>
+          ))}
+          <a href="https://wa.me/923266570023" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--green)', textDecoration: 'none', fontSize: '0.875rem' }}>WhatsApp</a>
+          <Link to="/admin/login" style={{ color: 'var(--text-faint)', textDecoration: 'none', fontSize: '0.75rem' }}>Admin</Link>
+        </div>
+        <p style={{ color: 'var(--text-faint)', fontSize: '0.8rem', margin: 0 }}>© {new Date().getFullYear()} PulseGear. All rights reserved.</p>
+      </div>
+    </footer>
+  )
+}

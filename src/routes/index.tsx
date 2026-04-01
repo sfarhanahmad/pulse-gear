@@ -11,11 +11,11 @@ export const Route = createFileRoute('/')({ component: HomePage })
 type SortOption = 'default' | 'price-asc' | 'price-desc' | 'name-asc'
 
 const CATEGORY_IMAGES: Record<string, string> = {
-  earbuds: 'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=600&q=80',
-  headphones: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80',
-  watch: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80',
-  wallet: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=600&q=80',
-  powerbank: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600&q=80',
+  earbuds: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600&q=80',
+  headphones: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&q=80',
+  watch: 'https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=600&q=80',
+  wallet: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80',
+  powerbank: 'https://images.unsplash.com/photo-1585338447937-7082f8fc763d?w=600&q=80',
 }
 
 const ANIMATED_WORDS = ['Earbuds', 'Headphones', 'Watches', 'Wallets', 'Power Banks']

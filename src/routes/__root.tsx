@@ -239,11 +239,12 @@ function Header() {
               style={{ background: 'var(--green)', color: '#fff', fontWeight: 700, fontSize: '0.875rem', padding: '8px 18px', borderRadius: 10, textDecoration: 'none', transition: 'all 0.2s', marginLeft: 4, boxShadow: '0 0 16px var(--green-glow)' }}>
               💬 WhatsApp
             </a>
-            {user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'User'}</span>
-                <button onClick={logout} style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-muted)', borderRadius: 8, padding: '6px 12px', fontSize: '0.8rem', cursor: 'pointer', fontFamily: 'var(--font-body)' }}>Logout</button>
-              </div>
+          {user ? (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Hi, {user.user_metadata?.full_name?.split(' ')[0] || 'User'}</span>
+    <Link to="/orders" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.8rem', padding: '6px 10px', borderRadius: 8, background: 'var(--bg-subtle)', border: '1px solid var(--border)' }}>My Orders</Link>
+    <button onClick={logout} style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)', color: 'var(--text-muted)', borderRadius: 8, padding: '6px 12px', fontSize: '0.8rem', cursor: 'pointer', fontFamily: 'var(--font-body)' }}>Logout</button>
+  </div>
             ) : (
               <div style={{ display: 'flex', gap: 8, marginLeft: 4 }}>
                 <button onClick={() => setAuthModal('login')} style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 10, padding: '7px 16px', fontSize: '0.875rem', cursor: 'pointer', fontFamily: 'var(--font-body)', fontWeight: 600, transition: 'all 0.2s' }}
